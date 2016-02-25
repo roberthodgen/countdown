@@ -8,10 +8,10 @@
 		'danger': 'countdown-danger'
 	});
 
-	app.directive('countdown', ['$interval', function ($interval) {
+	app.directive('countdown', [function () {
 		return {
 			restirct: 'E',
-			compile: function (element, attrs) {
+			compile: function (element) {
 				element.addClass('countdown');
 
 				return { post: postlink };
@@ -26,6 +26,7 @@
 				var self = this;
 
 				self.$element = null;
+				self.interval = null;
 				self.endTimestamp = null;
 				self.appliedClass = null;
 
@@ -82,7 +83,7 @@
 				};
 
 				self.start = function () {
-					$interval(self.update, 1 * 1000, self);
+					self.interval = $interval(self.update, 1 * 1000, self);
 					self.update();
 				};
 
@@ -92,6 +93,7 @@
 				};
 
 				$scope.$on('$destroy', function () {
+					$interval.cancel(self.interval);
 					self.$element = null;
 				});
 			}]
