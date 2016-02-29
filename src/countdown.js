@@ -41,6 +41,10 @@
 
 				Worker.prototype.update = function () {
 					var self = this;
+					if (!angular.isDefined(self.endTimestamp) || self.endTimestamp === null) {
+						return;
+					}
+
 					self.buildDates();
 					self.calculateTimeRemaining();
 					self.applyStyle();
@@ -54,9 +58,10 @@
 				};
 
 				Worker.prototype.calculateTimeRemaining = function () {
-					var self = this;
-					self.seconds = self.endDate.getTime() - self.nowDate.getTime();
-					self.seconds = Math.floor(self.seconds / 1000);
+					var self = this,
+						seconds = self.endDate.getTime() - self.nowDate.getTime();
+					seconds = Math.floor(seconds / 1000);
+					self.seconds = Math.max(seconds, 0);
 				};
 
 				Worker.prototype.applyStyle = function () {
@@ -79,7 +84,7 @@
 
 				Worker.prototype.writeToDom = function () {
 					var self = this;
-					self.$element.text(Math.abs(self.seconds));
+					self.$element.text(self.seconds);
 				};
 
 				self.start = function () {
