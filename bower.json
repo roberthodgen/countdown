@@ -1,0 +1,20 @@
+{
+  "name": "angular-timestamp-countdown",
+  "description": "Angular timestamp countdown directive",
+  "main": [
+    "countdown.js",
+    "countdown.css"
+  ],
+  "authors": [
+    "Robert Hodgen"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/roberthodgen/countdown",
+  "ignore": [
+    "src",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "^1.4.0"
+  }
+}
