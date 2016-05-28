@@ -3,7 +3,6 @@
 
 /* jshint unused:false */
 var CountdownModule = angular.module('roberthodgen.countdown', []);
-'use strict';
 
 /**
  * @name
@@ -18,98 +17,106 @@ CountdownModule.constant('COUNTDOWN_CLASSES', {
   'warn': 'countdown-warn',
   'danger': 'countdown-danger'
 });
-'use strict';
 
-CountdownModule.controller('CountdownCtrl', ['$scope', '$interval', 'COUNTDOWN_CLASSES', function ($scope, $interval, COUNTDOWN_CLASSES) {
-  var self = this;
+/**
+ * @name
+ * countdown
+ * @description
+ * Displays the number of seconds remianing until `endTimestamp` value.
+ * `endTimestamp` may be a string or expression.
+ * Configure when the warning CSS class will be applied with `warnSeconds`.
+ * Configure when the danger CSS class will be applied with `dangerSeconds`.
+ * @example
+ * Basic usage with scope value:
+ * ```html
+ * <countdown end-timestamp="vm.end"></countdown>
+ * ```
+ * Basic usage with static timestamp:
+ * ```html
+ * <countdown end-timestamp="2017-01-01T00:00:00.000Z"></countdown>
+ * ```
+ * Configuring the warning class application interval:
+ * ```html
+ * <countdown end-timestamp="vm.end" warn-seconds="30"></countdown>
+ * ```
+ * Configuring the danger class application interval:
+ * ```html
+ * <countdown end-timestamp="vm.end" danger-seconds="10"></countdown>
+ * ```
+ */
+CountdownModule.directive('countdown', ['COUNTDOWN_CLASSES', '$interval', function (COUNTDOWN_CLASSES, $interval) {
+  function link(scope, iElement, iAttrs) {
+    var interval = null,
+        appliedClass = null,
+        seconds = null,
+        warnSeconds = parseInt(iAttrs.warnSeconds, 10) || 10,
+        dangerSeconds = parseInt(iAttrs.dangerSeconds, 10) || 5;
 
-  self.element = null;
-  self.interval = null;
-  self.endTimestamp = null;
-  self.appliedClass = null;
+    function update() {
+      var timestamp = null;
 
-  var warnSeconds = 10;
-  var dangerSeconds = 5;
+      try {
+        timestamp = scope.$eval(iAttrs.endTimestamp);
+      } catch (e) {
+        timestamp = iAttrs.endTimestamp;
+      }
 
-  // TODO: Factor Worker into an Angular factory
-  function Worker(element, endTimestamp) {
-    var self = this;
-    self.element = element;
-    self.endTimestamp = endTimestamp;
-  }
+      if (!angular.isDefined(timestamp) || timestamp === null) {
+        iElement.removeClass(appliedClass);
+        iElement.text('');
+        return;
+      }
 
-  Worker.prototype.update = function () {
-    var self = this;
-    if (!angular.isDefined(self.endTimestamp) || self.endTimestamp === null) {
-      return;
+      var previousSeconds = seconds;
+      seconds = new Date(timestamp).getTime() - Date.now();
+      seconds = Math.max(Math.floor(seconds / 1000), 0);
+
+      if (previousSeconds === seconds) {
+        return;
+      }
+
+      var previousClass = appliedClass;
+      appliedClass = COUNTDOWN_CLASSES.normal;
+
+      if (seconds <= warnSeconds) {
+        appliedClass = COUNTDOWN_CLASSES.warn;
+      }
+
+      if (seconds <= dangerSeconds) {
+        appliedClass = COUNTDOWN_CLASSES.danger;
+      }
+
+      if (appliedClass !== previousClass) {
+        iElement.removeClass(previousClass);
+        iElement.addClass(appliedClass);
+      }
+
+      iElement.text(seconds);
+
+      if (seconds === 0) {
+        $interval.cancel(interval);
+      }
     }
 
-    self.buildDates();
-    self.calculateTimeRemaining();
-    self.applyStyle();
-    self.writeToDom();
-  };
-
-  Worker.prototype.buildDates = function () {
-    var self = this;
-    self.endDate = new Date(self.endTimestamp);
-    self.nowDate = new Date();
-  };
-
-  Worker.prototype.calculateTimeRemaining = function () {
-    var self = this,
-        seconds = self.endDate.getTime() - self.nowDate.getTime();
-    seconds = Math.floor(seconds / 1000);
-    self.seconds = Math.max(seconds, 0);
-  };
-
-  Worker.prototype.applyStyle = function () {
-    var self = this;
-
-    self.element.removeClass(self.appliedClass);
-
-    self.appliedClass = COUNTDOWN_CLASSES.normal;
-
-    if (self.seconds <= warnSeconds) {
-      self.appliedClass = COUNTDOWN_CLASSES.warn;
+    function setupInterval() {
+      $interval.cancel(interval);
+      interval = $interval(update, 1 * 1000);
     }
 
-    if (self.seconds <= dangerSeconds) {
-      self.appliedClass = COUNTDOWN_CLASSES.danger;
-    }
+    scope.$watch(function () {
+      try {
+        return scope.$eval(iAttrs.endTimestamp);
+      } catch (e) {
+        return iAttrs.endTimestamp;
+      }
+    }, function () {
+      update();
+      setupInterval();
+    });
 
-    self.element.addClass(self.appliedClass);
-  };
-
-  Worker.prototype.writeToDom = function () {
-    var self = this;
-    self.element.text(self.seconds);
-  };
-
-  self.start = function () {
-    self.interval = $interval(self.update, 1 * 1000, self);
-    self.update();
-  };
-
-  self.update = function () {
-    var time = $scope.$eval(self.endTimestamp);
-    new Worker(self.element, time).update();
-  };
-
-  $scope.$on('$destroy', function () {
-    $interval.cancel(self.interval);
-    self.element = null;
-  });
-}]);
-'use strict';
-
-CountdownModule.directive('countdown', [function () {
-  function link(scope, iElement, iAttrs, CountdownCtrl) {
-    // TODO: Look at scheduling the $interval here and using an Countdown
-    // factory for doing the updates--keeping it out of a controller.
-    CountdownCtrl.element = iElement;
-    CountdownCtrl.endTimestamp = iAttrs.endTimestamp;
-    CountdownCtrl.start();
+    scope.$on('$destroy', function () {
+      $interval.cancel(interval);
+    });
   }
 
   function compile(tElement) {
@@ -119,8 +126,8 @@ CountdownModule.directive('countdown', [function () {
 
   return {
     'restirct': 'E',
-    'compile': compile,
-    'controller': 'CountdownCtrl'
+    'compile': compile
   };
 }]);
+
 })();

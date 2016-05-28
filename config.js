@@ -1,7 +1,7 @@
 module.exports = {
 
   'closureStart': '(function () {\n',
-  'closureEnd': '\n})();',
+  'closureEnd': '\n\n})();\n',
 
   'styles': [
     'src/**/*.scss'

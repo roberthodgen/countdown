@@ -29,8 +29,8 @@ gulp.task('sass', function (done) {
 
 gulp.task('scripts', function () {
   return gulp.src(config.js)
-    .pipe(babel())
     .pipe(concat(config.script))
+    .pipe(babel())
     .pipe(header(config.closureStart))
     .pipe(footer(config.closureEnd))
     .pipe(gulp.dest(config.dest))

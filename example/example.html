@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Countdown</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="../countdown.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+  </head>
+  <body ng-app="countdown-example">
+    <div ng-controller="ExampleCtrl as vm" class="container">
+      <h1 class="page-header">
+        countdown
+      </h1>
+      <p>
+        <button class="btn btn-default btn-block" ng-click="vm.setupNearTimestamp()">
+          Reset
+        </button>
+      </p>
+      <div class="list-group">
+        <div class="list-group-item">
+          <div class="row">
+            <div class="col-xs-8">
+              <span style="padding: .5em 0;line-height: 1em;display: inline-block;">
+                {{ vm.timestamp | date:'medium' }}
+                10/5 second warning
+              </span>
+            </div>
+            <div class="col-xs-4 text-right">
+              <countdown end-timestamp="vm.timestamp"></countdown>
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="row">
+            <div class="col-xs-8">
+              <span style="padding: .5em 0;line-height: 1em;display: inline-block;">
+                {{ vm.timestamp | date:'medium' }}
+                5/3 second warning
+              </span>
+            </div>
+            <div class="col-xs-4 text-right">
+              <countdown end-timestamp="vm.timestamp" warn-seconds="5" danger-seconds="3"></countdown>
+            </div>
+          </div>
+        </div>
+        <div class="list-group-item">
+          <div class="row">
+            <div class="col-xs-8">
+              <span style="padding: .5em 0;line-height: 1em;display: inline-block;">
+                {{ '2017-01-01T00:00:00.000Z' | date:'medium' }}
+              </span>
+            </div>
+            <div class="col-xs-4 text-right">
+              <countdown end-timestamp="2017-01-01T00:00:00.000Z"></countdown>
+            </div>
+          </div>
+      </div>
+    </div>
+    <script src="app-compiled.js"></script>
+    <script src="../countdown.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -12,6 +12,7 @@
   "homepage": "https://github.com/roberthodgen/countdown",
   "ignore": [
     "src",
+    "exmaple",
     "CHANGELOG.md",
     "config.js",
     "gulpfile.js",
