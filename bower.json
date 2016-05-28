@@ -12,6 +12,11 @@
   "homepage": "https://github.com/roberthodgen/countdown",
   "ignore": [
     "src",
+    "CHANGELOG.md",
+    "config.js",
+    "gulpfile.js",
+    "README.md",
+    "node_modules",
     "bower_components"
   ],
   "dependencies": {

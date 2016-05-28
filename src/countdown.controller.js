@@ -1,26 +1,9 @@
-(function () {
-'use strict';
-
-/* jshint unused:false */
-var CountdownModule = angular.module('roberthodgen.countdown', []);
-'use strict';
-
-/**
- * @name
- * COUNTDOWN_CLASSES
- * @description
- * Contains the classes to be applied by the countdown directive.
- * @todo
- * Consider factoring this into a an angular provider for config-stage setup.
- */
-CountdownModule.constant('COUNTDOWN_CLASSES', {
-  'normal': 'countdown-normal',
-  'warn': 'countdown-warn',
-  'danger': 'countdown-danger'
-});
-'use strict';
-
-CountdownModule.controller('CountdownCtrl', ['$scope', '$interval', 'COUNTDOWN_CLASSES', function ($scope, $interval, COUNTDOWN_CLASSES) {
+CountdownModule
+.controller('CountdownCtrl', [
+  '$scope',
+  '$interval',
+  'COUNTDOWN_CLASSES',
+function ($scope, $interval, COUNTDOWN_CLASSES) {
   var self = this;
 
   self.element = null;
@@ -32,7 +15,7 @@ CountdownModule.controller('CountdownCtrl', ['$scope', '$interval', 'COUNTDOWN_C
   var dangerSeconds = 5;
 
   // TODO: Factor Worker into an Angular factory
-  function Worker(element, endTimestamp) {
+  function Worker (element, endTimestamp) {
     var self = this;
     self.element = element;
     self.endTimestamp = endTimestamp;
@@ -58,7 +41,7 @@ CountdownModule.controller('CountdownCtrl', ['$scope', '$interval', 'COUNTDOWN_C
 
   Worker.prototype.calculateTimeRemaining = function () {
     var self = this,
-        seconds = self.endDate.getTime() - self.nowDate.getTime();
+      seconds = self.endDate.getTime() - self.nowDate.getTime();
     seconds = Math.floor(seconds / 1000);
     self.seconds = Math.max(seconds, 0);
   };
@@ -101,26 +84,3 @@ CountdownModule.controller('CountdownCtrl', ['$scope', '$interval', 'COUNTDOWN_C
     self.element = null;
   });
 }]);
-'use strict';
-
-CountdownModule.directive('countdown', [function () {
-  function link(scope, iElement, iAttrs, CountdownCtrl) {
-    // TODO: Look at scheduling the $interval here and using an Countdown
-    // factory for doing the updates--keeping it out of a controller.
-    CountdownCtrl.element = iElement;
-    CountdownCtrl.endTimestamp = iAttrs.endTimestamp;
-    CountdownCtrl.start();
-  }
-
-  function compile(tElement) {
-    tElement.addClass('countdown');
-    return link;
-  }
-
-  return {
-    'restirct': 'E',
-    'compile': compile,
-    'controller': 'CountdownCtrl'
-  };
-}]);
-})();
