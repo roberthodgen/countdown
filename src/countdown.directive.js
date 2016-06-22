@@ -109,7 +109,7 @@ function (COUNTDOWN_CLASSES, $interval) {
   }
 
   return {
-    'restirct': 'E',
+    'restirct': 'AE',
     'compile': compile
   };
 }]);

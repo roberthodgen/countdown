@@ -1,0 +1,30 @@
+$countdown-text-color: #fff;
+$countdown-background-normal: #4ab74a;
+$countdown-background-warn: #eccb25;
+$countdown-background-danger: #e43a3a;
+
+countdown,
+[countdown] {
+  &.countdown {
+    border-radius: 1em;
+    color: $countdown-text-color;
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1em;
+    min-width: 2em;
+    padding: .5em;
+    text-align: center;
+
+    &.countdown-normal {
+      background-color: $countdown-background-normal;
+    }
+
+    &.countdown-warn {
+      background-color: $countdown-background-warn;
+    }
+
+    &.countdown-danger {
+      background-color: $countdown-background-danger;
+    }
+  }
+}

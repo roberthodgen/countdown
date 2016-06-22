@@ -125,7 +125,7 @@ CountdownModule.directive('countdown', ['COUNTDOWN_CLASSES', '$interval', functi
   }
 
   return {
-    'restirct': 'E',
+    'restirct': 'AE',
     'compile': compile
   };
 }]);

@@ -4,7 +4,7 @@
 
 ## Install
 
-`$ bower install --save-dev angular-timestamp-countdown`
+`$ bower install --save angular-timestamp-countdown`
 
 
 ## Example
@@ -19,6 +19,11 @@ Basic usage with static timestamp:
 <countdown end-timestamp="2017-01-01T00:00:00.000Z"></countdown>
 ```
 
+Using countdown as an attribute:
+```html
+<span class="badge" countdown end-timestamp="vm.end"></span>
+```
+
 Configuring the warning class application interval:
 ```html
 <countdown end-timestamp="vm.end" warn-seconds="30"></countdown>
@@ -29,7 +34,7 @@ Configuring the danger class application interval:
 <countdown end-timestamp="vm.end" danger-seconds="10"></countdown>
 ```
 
-Counts down the number of seconds to timestamp; stops at 0.
+Counts down the number of seconds to timestamp; stops at `0`.
 
 Include `roberthodgen.countdown` as an Angular module dependency, e.g.:
 

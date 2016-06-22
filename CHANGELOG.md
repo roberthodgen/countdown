@@ -1,3 +1,11 @@
+# v1.2.0
+> Attribute and style color variables
+
+- Now restricted to `"AE"` or attribute and element; added attribute.
+- Renamed `countdown.scss` to `countdown.style.scss`.
+- Added color variables `$countdown-text-color`, `$countdown-background-normal`, `$countdown-background-warn`, `$countdown-background-danger`.
+
+
 # v1.1.0
 > Cleanup
 
